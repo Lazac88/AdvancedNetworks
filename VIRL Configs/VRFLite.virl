@@ -3,7 +3,7 @@
     <node name="iosv-1" type="SIMPLE" subtype="IOSv" location="481,287">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 20:52:47 UTC Mon Oct 16 2017
+! Last configuration change at 23:05:38 UTC Thu Oct 19 2017
 !
 version 15.6
 service timestamps debug datetime msec
@@ -78,7 +78,7 @@ interface Loopback1
  ip address 12.2.2.1 255.255.255.0
 !
 interface GigabitEthernet0/0
- no ip address
+ ip address 10.255.0.74 255.255.0.0
  shutdown
  duplex auto
  speed auto
@@ -181,7 +181,7 @@ end</entry>
     <node name="iosv-2" type="SIMPLE" subtype="IOSv" location="687,289">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 20:52:44 UTC Mon Oct 16 2017
+! Last configuration change at 23:05:45 UTC Thu Oct 19 2017
 !
 version 15.6
 service timestamps debug datetime msec
@@ -264,7 +264,7 @@ interface Loopback3
  ip address 208.200.200.1 255.255.0.0
 !
 interface GigabitEthernet0/0
- no ip address
+ ip address 10.255.0.75 255.255.0.0
  shutdown
  duplex auto
  speed auto
@@ -285,10 +285,14 @@ interface GigabitEthernet0/2
  media-type rj45
 !
 router ospf 1 vrf corp
+ router-id 12.1.1.2
  network 192.168.12.2 0.0.0.0 area 0
+ default-information originate always
 !
 router ospf 2 vrf GUEST
+ router-id 12.2.2.2
  network 192.168.12.2 0.0.0.0 area 0
+ default-information originate always
 !
 ip forward-protocol nd
 !
@@ -347,14 +351,14 @@ end</entry>
     <node name="iosv-3" type="SIMPLE" subtype="IOSv" location="169,200">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 20:52:56 UTC Mon Oct 16 2017
+! Last configuration change at 23:05:51 UTC Thu Oct 19 2017
 !
 version 15.6
 service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 !
-hostname Router
+hostname PC1
 !
 boot-start-marker
 boot-end-marker
@@ -407,24 +411,25 @@ redundancy
 !
 !
 interface GigabitEthernet0/0
- no ip address
+ ip address 10.255.0.76 255.255.0.0
  shutdown
  duplex auto
  speed auto
  media-type rj45
 !
 interface GigabitEthernet0/1
- no ip address
- shutdown
+ ip address 10.1.1.2 255.255.255.0
  duplex auto
  speed auto
  media-type rj45
 !
+ip default-gateway 10.1.1.1
 ip forward-protocol nd
 !
 !
 no ip http server
 no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 10.1.1.1
 !
 !
 !
@@ -474,14 +479,14 @@ end</entry>
     <node name="iosv-4" type="SIMPLE" subtype="IOSv" location="175,389">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 20:52:45 UTC Mon Oct 16 2017
+! Last configuration change at 23:05:48 UTC Thu Oct 19 2017
 !
 version 15.6
 service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 !
-hostname Router
+hostname PC2
 !
 boot-start-marker
 boot-end-marker
@@ -534,24 +539,25 @@ redundancy
 !
 !
 interface GigabitEthernet0/0
- no ip address
+ ip address 10.255.0.77 255.255.0.0
  shutdown
  duplex auto
  speed auto
  media-type rj45
 !
 interface GigabitEthernet0/1
- no ip address
- shutdown
+ ip address 20.1.1.2 255.255.255.0
  duplex auto
  speed auto
  media-type rj45
 !
+ip default-gateway 20.1.1.1
 ip forward-protocol nd
 !
 !
 no ip http server
 no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 20.1.1.1
 !
 !
 !
@@ -601,7 +607,7 @@ end</entry>
     <node name="iosvl2-1" type="SIMPLE" subtype="IOSvL2" location="281,284">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 20:52:19 UTC Mon Oct 16 2017
+! Last configuration change at 23:04:30 UTC Thu Oct 19 2017
 !
 version 15.2
 service timestamps debug datetime msec
@@ -714,6 +720,7 @@ banner login `
 line con 0
 line aux 0
 line vty 0 4
+ login
 !
 !
 end</entry>
