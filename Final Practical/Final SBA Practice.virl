@@ -1,0 +1,1060 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.9" simulationEngine="OPENSTACK" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.9/virl.xsd">
+    <node name="PE1" type="SIMPLE" subtype="IOSv" location="195,89">
+        <extensions>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">!&#xD;
+! Last configuration change at 02:01:42 UTC Sat Sep 24 2016&#xD;
+!&#xD;
+version 15.6&#xD;
+service timestamps debug datetime msec&#xD;
+service timestamps log datetime msec&#xD;
+no service password-encryption&#xD;
+!&#xD;
+hostname PE1&#xD;
+!&#xD;
+boot-start-marker&#xD;
+boot-end-marker&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+no aaa new-model&#xD;
+ethernet lmi ce&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+mmi polling-interval 60&#xD;
+no mmi auto-configure&#xD;
+no mmi pvc&#xD;
+mmi snmp-timeout 180&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+ip vrf TYRELL&#xD;
+ rd 1234:58&#xD;
+ route-target export 1234:58&#xD;
+ route-target import 1234:58&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+no ip domain lookup&#xD;
+ip cef&#xD;
+no ipv6 cef&#xD;
+!&#xD;
+multilink bundle-name authenticated&#xD;
+mpls label protocol ldp&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+redundancy&#xD;
+!&#xD;
+!&#xD;
+! &#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+interface Loopback0&#xD;
+ ip address 1.1.1.1 255.255.255.255&#xD;
+!&#xD;
+interface GigabitEthernet0/0&#xD;
+ no ip address&#xD;
+ shutdown&#xD;
+ duplex auto&#xD;
+ speed auto&#xD;
+ media-type rj45&#xD;
+!&#xD;
+interface GigabitEthernet0/1&#xD;
+ description MPLS link to P1&#xD;
+ ip address 172.16.12.1 255.255.255.0&#xD;
+ duplex auto&#xD;
+ speed auto&#xD;
+ media-type rj45&#xD;
+ mpls ip&#xD;
+!&#xD;
+interface GigabitEthernet0/2&#xD;
+ description Customer link to Tyrell T1&#xD;
+ ip vrf forwarding TYRELL&#xD;
+ ip address 192.168.11.5 255.255.255.252&#xD;
+ duplex auto&#xD;
+ speed auto&#xD;
+ media-type rj45&#xD;
+!&#xD;
+interface GigabitEthernet0/3&#xD;
+ description Customer link to Tyrell T4&#xD;
+ ip vrf forwarding TYRELL&#xD;
+ ip address 192.168.11.1 255.255.255.252&#xD;
+ duplex auto&#xD;
+ speed auto&#xD;
+ media-type rj45&#xD;
+!&#xD;
+router ospf 1&#xD;
+ router-id 1.1.1.1&#xD;
+ network 1.1.1.1 0.0.0.0 area 0&#xD;
+ network 172.16.12.1 0.0.0.0 area 0&#xD;
+!&#xD;
+router bgp 1234&#xD;
+ bgp router-id 1.1.1.1&#xD;
+ bgp log-neighbor-changes&#xD;
+ no bgp default ipv4-unicast&#xD;
+ neighbor 3.3.3.3 remote-as 1234&#xD;
+ neighbor 3.3.3.3 update-source Loopback0&#xD;
+ !&#xD;
+ address-family ipv4&#xD;
+ exit-address-family&#xD;
+ !&#xD;
+ address-family vpnv4&#xD;
+  neighbor 3.3.3.3 activate&#xD;
+  neighbor 3.3.3.3 send-community extended&#xD;
+ exit-address-family&#xD;
+!&#xD;
+ip forward-protocol nd&#xD;
+!&#xD;
+!&#xD;
+no ip http server&#xD;
+no ip http secure-server&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+mpls ldp router-id Loopback0&#xD;
+!&#xD;
+control-plane&#xD;
+!&#xD;
+banner exec `&#xD;
+**************************************************************************&#xD;
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *&#xD;
+* education. IOSv is provided as-is and is not supported by Cisco's      *&#xD;
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *&#xD;
+* of the IOSv Software or Documentation to any third party for any       *&#xD;
+* purposes is expressly prohibited except as otherwise authorized by     *&#xD;
+* Cisco in writing.                                                      *&#xD;
+**************************************************************************`&#xD;
+banner incoming `&#xD;
+**************************************************************************&#xD;
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *&#xD;
+* education. IOSv is provided as-is and is not supported by Cisco's      *&#xD;
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *&#xD;
+* of the IOSv Software or Documentation to any third party for any       *&#xD;
+* purposes is expressly prohibited except as otherwise authorized by     *&#xD;
+* Cisco in writing.                                                      *&#xD;
+**************************************************************************`&#xD;
+banner login `&#xD;
+**************************************************************************&#xD;
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *&#xD;
+* education. IOSv is provided as-is and is not supported by Cisco's      *&#xD;
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *&#xD;
+* of the IOSv Software or Documentation to any third party for any       *&#xD;
+* purposes is expressly prohibited except as otherwise authorized by     *&#xD;
+* Cisco in writing.                                                      *&#xD;
+**************************************************************************`&#xD;
+!&#xD;
+line con 0&#xD;
+ exec-timeout 0 0&#xD;
+ logging synchronous&#xD;
+line aux 0&#xD;
+line vty 0 4&#xD;
+ login&#xD;
+ transport input none&#xD;
+!&#xD;
+no scheduler allocate&#xD;
+!&#xD;
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+        <interface id="2" name="GigabitEthernet0/3"/>
+    </node>
+    <node name="P1" type="SIMPLE" subtype="IOSv" location="275,26">
+        <extensions>
+            <entry key="config" type="String">!
+! Last configuration change at 02:02:14 UTC Sat Sep 24 2016
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname P1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+ethernet lmi ce
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+mpls label protocol ldp
+!
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 2.2.2.2 255.255.255.255
+!
+interface GigabitEthernet0/0
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description Link to PE1
+ ip address 172.16.12.2 255.255.255.0
+ duplex auto
+ speed auto
+ media-type rj45
+ mpls ip
+!
+interface GigabitEthernet0/2
+ description Link to PE2
+ ip address 172.16.23.2 255.255.255.0
+ duplex auto
+ speed auto
+ media-type rj45
+ mpls ip
+!
+router ospf 1
+ router-id 2.2.2.2
+ network 2.2.2.2 0.0.0.0 area 0
+ network 172.16.12.2 0.0.0.0 area 0
+ network 172.16.23.2 0.0.0.0 area 0
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+mpls ldp router-id Loopback0
+!
+control-plane
+!
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+    </node>
+    <node name="PE2" type="SIMPLE" subtype="IOSv" location="337,90">
+        <extensions>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">!&#xD;
+! Last configuration change at 02:01:59 UTC Sat Sep 24 2016&#xD;
+!&#xD;
+version 15.6&#xD;
+service timestamps debug datetime msec&#xD;
+service timestamps log datetime msec&#xD;
+no service password-encryption&#xD;
+!&#xD;
+hostname PE2&#xD;
+!&#xD;
+boot-start-marker&#xD;
+boot-end-marker&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+no aaa new-model&#xD;
+ethernet lmi ce&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+mmi polling-interval 60&#xD;
+no mmi auto-configure&#xD;
+no mmi pvc&#xD;
+mmi snmp-timeout 180&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+ip vrf TYRELL&#xD;
+ rd 1234:58&#xD;
+ route-target export 1234:58&#xD;
+ route-target import 1234:58&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+no ip domain lookup&#xD;
+ip cef&#xD;
+no ipv6 cef&#xD;
+!&#xD;
+multilink bundle-name authenticated&#xD;
+mpls label protocol ldp&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+redundancy&#xD;
+!&#xD;
+!&#xD;
+! &#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+interface Loopback0&#xD;
+ ip address 3.3.3.3 255.255.255.255&#xD;
+!&#xD;
+interface GigabitEthernet0/0&#xD;
+ no ip address&#xD;
+ shutdown&#xD;
+ duplex auto&#xD;
+ speed auto&#xD;
+ media-type rj45&#xD;
+!&#xD;
+interface GigabitEthernet0/1&#xD;
+ description MPLS Link to P1&#xD;
+ ip address 172.16.23.3 255.255.255.0&#xD;
+ duplex auto&#xD;
+ speed auto&#xD;
+ media-type rj45&#xD;
+ mpls ip&#xD;
+!&#xD;
+interface GigabitEthernet0/2&#xD;
+ description Customer link to Tyrell T2&#xD;
+ ip vrf forwarding TYRELL&#xD;
+ ip address 192.168.33.9 255.255.255.252&#xD;
+ duplex auto&#xD;
+ speed auto&#xD;
+ media-type rj45&#xD;
+!&#xD;
+router ospf 1&#xD;
+ router-id 3.3.3.3&#xD;
+ network 3.3.3.3 0.0.0.0 area 0&#xD;
+ network 172.16.23.3 0.0.0.0 area 0&#xD;
+!&#xD;
+router bgp 1234&#xD;
+ bgp router-id 3.3.3.3&#xD;
+ bgp log-neighbor-changes&#xD;
+ no bgp default ipv4-unicast&#xD;
+ neighbor 1.1.1.1 remote-as 1234&#xD;
+ neighbor 1.1.1.1 update-source Loopback0&#xD;
+ !&#xD;
+ address-family ipv4&#xD;
+ exit-address-family&#xD;
+ !&#xD;
+ address-family vpnv4&#xD;
+  neighbor 1.1.1.1 activate&#xD;
+  neighbor 1.1.1.1 send-community extended&#xD;
+ exit-address-family&#xD;
+!&#xD;
+ip forward-protocol nd&#xD;
+!&#xD;
+!&#xD;
+no ip http server&#xD;
+no ip http secure-server&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+mpls ldp router-id Loopback0&#xD;
+!&#xD;
+control-plane&#xD;
+!&#xD;
+banner exec `&#xD;
+**************************************************************************&#xD;
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *&#xD;
+* education. IOSv is provided as-is and is not supported by Cisco's      *&#xD;
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *&#xD;
+* of the IOSv Software or Documentation to any third party for any       *&#xD;
+* purposes is expressly prohibited except as otherwise authorized by     *&#xD;
+* Cisco in writing.                                                      *&#xD;
+**************************************************************************`&#xD;
+banner incoming `&#xD;
+**************************************************************************&#xD;
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *&#xD;
+* education. IOSv is provided as-is and is not supported by Cisco's      *&#xD;
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *&#xD;
+* of the IOSv Software or Documentation to any third party for any       *&#xD;
+* purposes is expressly prohibited except as otherwise authorized by     *&#xD;
+* Cisco in writing.                                                      *&#xD;
+**************************************************************************`&#xD;
+banner login `&#xD;
+**************************************************************************&#xD;
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *&#xD;
+* education. IOSv is provided as-is and is not supported by Cisco's      *&#xD;
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *&#xD;
+* of the IOSv Software or Documentation to any third party for any       *&#xD;
+* purposes is expressly prohibited except as otherwise authorized by     *&#xD;
+* Cisco in writing.                                                      *&#xD;
+**************************************************************************`&#xD;
+!&#xD;
+line con 0&#xD;
+ exec-timeout 0 0&#xD;
+ logging synchronous&#xD;
+line aux 0&#xD;
+line vty 0 4&#xD;
+ login&#xD;
+ transport input none&#xD;
+!&#xD;
+no scheduler allocate&#xD;
+!&#xD;
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+    </node>
+    <node name="T1" type="SIMPLE" subtype="IOSv" location="194,163">
+        <extensions>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">!&#xD;
+! Last configuration change at 02:02:08 UTC Sat Sep 24 2016&#xD;
+!&#xD;
+version 15.6&#xD;
+service timestamps debug datetime msec&#xD;
+service timestamps log datetime msec&#xD;
+no service password-encryption&#xD;
+!&#xD;
+hostname T1&#xD;
+!&#xD;
+boot-start-marker&#xD;
+boot-end-marker&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+no aaa new-model&#xD;
+ethernet lmi ce&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+mmi polling-interval 60&#xD;
+no mmi auto-configure&#xD;
+no mmi pvc&#xD;
+mmi snmp-timeout 180&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+no ip domain lookup&#xD;
+ip cef&#xD;
+no ipv6 cef&#xD;
+!&#xD;
+multilink bundle-name authenticated&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+redundancy&#xD;
+!&#xD;
+!&#xD;
+! &#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+interface Loopback0&#xD;
+ ip address 123.1.1.1 255.255.255.255&#xD;
+!&#xD;
+interface GigabitEthernet0/0&#xD;
+ no ip address&#xD;
+ shutdown&#xD;
+ duplex auto&#xD;
+ speed auto&#xD;
+ media-type rj45&#xD;
+!&#xD;
+interface GigabitEthernet0/1&#xD;
+ description Link to MPLS Core&#xD;
+ ip address 192.168.11.6 255.255.255.252&#xD;
+ duplex auto&#xD;
+ speed auto&#xD;
+ media-type rj45&#xD;
+!&#xD;
+interface GigabitEthernet0/2&#xD;
+ description Link to M3&#xD;
+ ip address 172.16.13.1 255.255.255.252&#xD;
+ duplex auto&#xD;
+ speed auto&#xD;
+ media-type rj45&#xD;
+!&#xD;
+interface GigabitEthernet0/3&#xD;
+ description NOT IN USE&#xD;
+ no ip address&#xD;
+ shutdown&#xD;
+ duplex auto&#xD;
+ speed auto&#xD;
+!&#xD;
+router ospf 1&#xD;
+!&#xD;
+ip forward-protocol nd&#xD;
+!&#xD;
+!&#xD;
+no ip http server&#xD;
+no ip http secure-server&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+control-plane&#xD;
+!&#xD;
+banner exec `&#xD;
+**************************************************************************&#xD;
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *&#xD;
+* education. IOSv is provided as-is and is not supported by Cisco's      *&#xD;
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *&#xD;
+* of the IOSv Software or Documentation to any third party for any       *&#xD;
+* purposes is expressly prohibited except as otherwise authorized by     *&#xD;
+* Cisco in writing.                                                      *&#xD;
+**************************************************************************`&#xD;
+banner incoming `&#xD;
+**************************************************************************&#xD;
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *&#xD;
+* education. IOSv is provided as-is and is not supported by Cisco's      *&#xD;
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *&#xD;
+* of the IOSv Software or Documentation to any third party for any       *&#xD;
+* purposes is expressly prohibited except as otherwise authorized by     *&#xD;
+* Cisco in writing.                                                      *&#xD;
+**************************************************************************`&#xD;
+banner login `&#xD;
+**************************************************************************&#xD;
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *&#xD;
+* education. IOSv is provided as-is and is not supported by Cisco's      *&#xD;
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *&#xD;
+* of the IOSv Software or Documentation to any third party for any       *&#xD;
+* purposes is expressly prohibited except as otherwise authorized by     *&#xD;
+* Cisco in writing.                                                      *&#xD;
+**************************************************************************`&#xD;
+!&#xD;
+line con 0&#xD;
+ exec-timeout 0 0&#xD;
+ logging synchronous&#xD;
+line aux 0&#xD;
+line vty 0 4&#xD;
+ login&#xD;
+ transport input none&#xD;
+!&#xD;
+no scheduler allocate&#xD;
+!&#xD;
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+        <interface id="2" name="GigabitEthernet0/3"/>
+    </node>
+    <node name="T2" type="SIMPLE" subtype="IOSv" location="337,166">
+        <extensions>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">!&#xD;
+! Last configuration change at 02:01:47 UTC Sat Sep 24 2016&#xD;
+!&#xD;
+version 15.6&#xD;
+service timestamps debug datetime msec&#xD;
+service timestamps log datetime msec&#xD;
+no service password-encryption&#xD;
+!&#xD;
+hostname T2&#xD;
+!&#xD;
+boot-start-marker&#xD;
+boot-end-marker&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+no aaa new-model&#xD;
+ethernet lmi ce&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+mmi polling-interval 60&#xD;
+no mmi auto-configure&#xD;
+no mmi pvc&#xD;
+mmi snmp-timeout 180&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+no ip domain lookup&#xD;
+ip cef&#xD;
+no ipv6 cef&#xD;
+!&#xD;
+multilink bundle-name authenticated&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+redundancy&#xD;
+!&#xD;
+!&#xD;
+! &#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+interface Loopback0&#xD;
+ ip address 123.2.2.2 255.255.255.255&#xD;
+!&#xD;
+interface GigabitEthernet0/0&#xD;
+ no ip address&#xD;
+ shutdown&#xD;
+ duplex auto&#xD;
+ speed auto&#xD;
+ media-type rj45&#xD;
+!&#xD;
+interface GigabitEthernet0/1&#xD;
+ description Link to MPLS Core&#xD;
+ ip address 192.168.33.10 255.255.255.252&#xD;
+ duplex auto&#xD;
+ speed auto&#xD;
+ media-type rj45&#xD;
+!&#xD;
+interface GigabitEthernet0/2&#xD;
+ description Link to T3&#xD;
+ ip address 172.16.23.5 255.255.255.252&#xD;
+ duplex auto&#xD;
+ speed auto&#xD;
+ media-type rj45&#xD;
+!&#xD;
+interface GigabitEthernet0/3&#xD;
+ description NOT IN USE&#xD;
+ no ip address&#xD;
+ duplex auto&#xD;
+ speed auto&#xD;
+!&#xD;
+ip forward-protocol nd&#xD;
+!&#xD;
+!&#xD;
+no ip http server&#xD;
+no ip http secure-server&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+control-plane&#xD;
+!&#xD;
+!&#xD;
+line con 0&#xD;
+ exec-timeout 0 0&#xD;
+ logging synchronous&#xD;
+line aux 0&#xD;
+line vty 0 4&#xD;
+ login&#xD;
+ transport input none&#xD;
+!&#xD;
+no scheduler allocate&#xD;
+!&#xD;
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+        <interface id="2" name="GigabitEthernet0/3"/>
+    </node>
+    <node name="T3" type="SIMPLE" subtype="IOSv" location="262,213">
+        <extensions>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">!&#xD;
+! Last configuration change at 02:02:33 UTC Sat Sep 24 2016&#xD;
+!&#xD;
+version 15.6&#xD;
+service timestamps debug datetime msec&#xD;
+service timestamps log datetime msec&#xD;
+no service password-encryption&#xD;
+!&#xD;
+hostname T3&#xD;
+!&#xD;
+boot-start-marker&#xD;
+boot-end-marker&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+no aaa new-model&#xD;
+ethernet lmi ce&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+mmi polling-interval 60&#xD;
+no mmi auto-configure&#xD;
+no mmi pvc&#xD;
+mmi snmp-timeout 180&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+no ip domain lookup&#xD;
+ip cef&#xD;
+no ipv6 cef&#xD;
+!&#xD;
+multilink bundle-name authenticated&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+redundancy&#xD;
+!&#xD;
+!&#xD;
+! &#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+interface Loopback0&#xD;
+ ip address 123.3.3.3 255.255.255.255&#xD;
+!&#xD;
+interface GigabitEthernet0/0&#xD;
+ no ip address&#xD;
+ shutdown&#xD;
+ duplex auto&#xD;
+ speed auto&#xD;
+ media-type rj45&#xD;
+!&#xD;
+interface GigabitEthernet0/1&#xD;
+ description Link to T1&#xD;
+ ip address 172.16.13.2 255.255.255.252&#xD;
+ duplex auto&#xD;
+ speed auto&#xD;
+ media-type rj45&#xD;
+!&#xD;
+interface GigabitEthernet0/2&#xD;
+ description Link to T2&#xD;
+ ip address 172.16.23.6 255.255.255.252&#xD;
+ duplex auto&#xD;
+ speed auto&#xD;
+ media-type rj45&#xD;
+!&#xD;
+ip forward-protocol nd&#xD;
+!&#xD;
+!&#xD;
+no ip http server&#xD;
+no ip http secure-server&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+control-plane&#xD;
+!&#xD;
+banner exec `&#xD;
+**************************************************************************&#xD;
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *&#xD;
+* education. IOSv is provided as-is and is not supported by Cisco's      *&#xD;
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *&#xD;
+* of the IOSv Software or Documentation to any third party for any       *&#xD;
+* purposes is expressly prohibited except as otherwise authorized by     *&#xD;
+* Cisco in writing.                                                      *&#xD;
+**************************************************************************`&#xD;
+banner incoming `&#xD;
+**************************************************************************&#xD;
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *&#xD;
+* education. IOSv is provided as-is and is not supported by Cisco's      *&#xD;
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *&#xD;
+* of the IOSv Software or Documentation to any third party for any       *&#xD;
+* purposes is expressly prohibited except as otherwise authorized by     *&#xD;
+* Cisco in writing.                                                      *&#xD;
+**************************************************************************`&#xD;
+banner login `&#xD;
+**************************************************************************&#xD;
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *&#xD;
+* education. IOSv is provided as-is and is not supported by Cisco's      *&#xD;
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *&#xD;
+* of the IOSv Software or Documentation to any third party for any       *&#xD;
+* purposes is expressly prohibited except as otherwise authorized by     *&#xD;
+* Cisco in writing.                                                      *&#xD;
+**************************************************************************`&#xD;
+!&#xD;
+line con 0&#xD;
+ exec-timeout 0 0&#xD;
+ logging synchronous&#xD;
+line aux 0&#xD;
+line vty 0 4&#xD;
+ login&#xD;
+ transport input none&#xD;
+!&#xD;
+no scheduler allocate&#xD;
+!&#xD;
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+    </node>
+    <node name="T4" type="SIMPLE" subtype="IOSv" location="100,91">
+        <extensions>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">!&#xD;
+! Last configuration change at 02:01:46 UTC Sat Sep 24 2016&#xD;
+!&#xD;
+version 15.6&#xD;
+service timestamps debug datetime msec&#xD;
+service timestamps log datetime msec&#xD;
+no service password-encryption&#xD;
+!&#xD;
+hostname T4&#xD;
+!&#xD;
+boot-start-marker&#xD;
+boot-end-marker&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+no aaa new-model&#xD;
+ethernet lmi ce&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+mmi polling-interval 60&#xD;
+no mmi auto-configure&#xD;
+no mmi pvc&#xD;
+mmi snmp-timeout 180&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+no ip domain lookup&#xD;
+ip cef&#xD;
+no ipv6 cef&#xD;
+!&#xD;
+multilink bundle-name authenticated&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+redundancy&#xD;
+!&#xD;
+!&#xD;
+! &#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+interface GigabitEthernet0/0&#xD;
+ no ip address&#xD;
+ shutdown&#xD;
+ duplex auto&#xD;
+ speed auto&#xD;
+ media-type rj45&#xD;
+!&#xD;
+interface GigabitEthernet0/1&#xD;
+ description Link to MPLS Core&#xD;
+ ip address 192.168.11.2 255.255.255.252&#xD;
+ duplex auto&#xD;
+ speed auto&#xD;
+ media-type rj45&#xD;
+!&#xD;
+ip forward-protocol nd&#xD;
+!&#xD;
+!&#xD;
+no ip http server&#xD;
+no ip http secure-server&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+control-plane&#xD;
+!&#xD;
+banner exec `&#xD;
+**************************************************************************&#xD;
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *&#xD;
+* education. IOSv is provided as-is and is not supported by Cisco's      *&#xD;
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *&#xD;
+* of the IOSv Software or Documentation to any third party for any       *&#xD;
+* purposes is expressly prohibited except as otherwise authorized by     *&#xD;
+* Cisco in writing.                                                      *&#xD;
+**************************************************************************`&#xD;
+banner incoming `&#xD;
+**************************************************************************&#xD;
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *&#xD;
+* education. IOSv is provided as-is and is not supported by Cisco's      *&#xD;
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *&#xD;
+* of the IOSv Software or Documentation to any third party for any       *&#xD;
+* purposes is expressly prohibited except as otherwise authorized by     *&#xD;
+* Cisco in writing.                                                      *&#xD;
+**************************************************************************`&#xD;
+banner login `&#xD;
+**************************************************************************&#xD;
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *&#xD;
+* education. IOSv is provided as-is and is not supported by Cisco's      *&#xD;
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *&#xD;
+* of the IOSv Software or Documentation to any third party for any       *&#xD;
+* purposes is expressly prohibited except as otherwise authorized by     *&#xD;
+* Cisco in writing.                                                      *&#xD;
+**************************************************************************`&#xD;
+!&#xD;
+line con 0&#xD;
+ exec-timeout 0 0&#xD;
+ logging synchronous&#xD;
+line aux 0&#xD;
+line vty 0 4&#xD;
+ login&#xD;
+ transport input none&#xD;
+!&#xD;
+no scheduler allocate&#xD;
+!&#xD;
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+    </node>
+    <connection dst="/virl:topology/virl:node[2]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[3]/virl:interface[1]" src="/virl:topology/virl:node[2]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[4]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[1]" src="/virl:topology/virl:node[3]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[6]/virl:interface[1]" src="/virl:topology/virl:node[4]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[2]" src="/virl:topology/virl:node[6]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[7]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[3]"/>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[3]" src="/virl:topology/virl:node[4]/virl:interface[3]"/>
+</topology>
